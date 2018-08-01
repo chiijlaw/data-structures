@@ -18,8 +18,8 @@ var Stack = function() {
     output = lastItem;
     if (Object.keys(someInstance).length-1 > 3) {
       delete someInstance[lastItem];
-      return output;
     }
+    return output;
   };
 
   someInstance.size = function() {
