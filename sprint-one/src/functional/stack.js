@@ -14,12 +14,12 @@ var Stack = function() {
 
   someInstance.pop = function() {
     count--;
-    var lastItem = Object.keys(someInstance)[Object.keys(someInstance).length-1];
+    var lastItem = Object.keys(someInstance)[Object.keys(someInstance).length - 1];
     output = lastItem;
-    if (Object.keys(someInstance).length-1 > 3) {
+    if (Object.keys(someInstance).length > 3) {
       delete someInstance[lastItem];
+      return output;
     }
-    return output;
   };
 
   someInstance.size = function() {
