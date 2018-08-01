@@ -7,7 +7,6 @@ var Stack = function() {
   var output = 0;
   // Implement the methods below
   someInstance.push = function(value) {
-    var value = value;
     someInstance[value] = value;
     count++;
   };
