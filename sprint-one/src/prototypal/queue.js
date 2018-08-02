@@ -10,24 +10,24 @@ var Queue = function() {
 var queueMethods = {};
 
 queueMethods.enqueue = function (value) {
-    this[value] = value;
-    this.count++;
+  this[value] = value;
+  this.count++;
 };
 
 queueMethods.dequeue = function () {
-	this.count--;
-	var mostRecentItem = Object.keys(this)[2];
-    output = mostRecentItem;
-    if (Object.keys(this).length > 2) {
-      delete this[mostRecentItem];
-      return output;
-    }
+  this.count--;
+  var mostRecentItem = Object.keys(this)[2];
+  output = mostRecentItem;
+  if (Object.keys(this).length > 2) {
+    delete this[mostRecentItem];
+    return output;
+  }
 };
 
 queueMethods.size = function ()	{
   if (this.count <= 0) {
-      return 0;
-    } else {
-      return this.count;
-    }
+    return 0;
+  } else {
+    return this.count;
+  }
 };
