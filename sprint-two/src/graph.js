@@ -10,16 +10,24 @@ var Graph = function() {
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
   var name = node;
+  if (this.newGraph[name] !== undefined) {
+    for (var key in this.newGraph) {
+      for (var i = 0; i < this.newGraph[key].length; i++) {
+        if (this.newGraph[key][i] === name) {
+          this.newGraph[key].splice(i, 1);
+        }
+      }
+    }
+  }
   this.newGraph[name] = [];
-  //debugger;
+
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
   var result = false;
-  //debugger;
-  for (var key in this.newGraph) {  
-    if (key == node) {
+  for (var key in this.newGraph) {
+    if (key === node.toString()) {
       return result = true; 
     }
   }
@@ -85,6 +93,7 @@ Graph.prototype.forEachNode = function(cb) {
 /*
  * Complexity: What is the time complexity of the above functions?
   addnode is constant O(1)
+  adNodeV2 is nm^n. NOT EFFICIENT
   contains is linear O(n)
   remove node is linear O(n)
   hasedge is linear O(n)
