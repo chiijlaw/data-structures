@@ -39,10 +39,33 @@ treeMethods.contains = function(target) {
   return result;
 };
 
+treeMethods.removeChild = function(target) {
+
+  var goDeeper = function(collection, target) {
+    for (var i = 0; i < collection.length; i++) {
+      if (collection[i].value === target) {
+        collection.splice(i, 1);
+      } else if (collection[i].children.length > 0) {
+        goDeeper(collection[i].children, target);
+      }
+    }
+  };
+
+  for (var i = 0; i < this.children.length; i++) {
+    if (this.children[i].value === target) {
+      this.children.splice(i, 1); 
+    } else if (this.children[i].children.length > 0) {
+      goDeeper(this.children[i].children, target);
+    }
+  }
+   
+};
+
 
 
 /*
  * Complexity: What is the time complexity of the above functions?
   Complexity of addChild is constant O(1)
   Complexity of contains is linear O(n)
+  Complexity of removeChild is linear O(n)
  */
