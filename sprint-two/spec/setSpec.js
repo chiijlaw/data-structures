@@ -24,4 +24,12 @@ describe('set', function() {
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
 
+  it('should not contain string that was removed randomly', function() { 
+    set.add('Susan Sarandon');
+    set.add('Danny Glover');
+    set.add('Ivan Hui');
+    set.add('Chii Law');  
+    var randWinner = set.removeRandom();
+    expect(set.contains(randWinner)).to.equal(false);    
+  });
 });

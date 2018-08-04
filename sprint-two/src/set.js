@@ -27,10 +27,15 @@ setPrototype.remove = function(item) {
 
 };
 
+setPrototype.removeRandom = function() {
+  var index = Math.floor(Math.random() * this.storage.length);
+  return this.storage.splice(index, 1);
+};
+
 /*
  * Complexity: What is the time complexity of the above functions?
   add is constant O(1)
   contains is linear O(n)
   remove is linear O(n)
-
+  removeRandom is constant O(1)
  */
