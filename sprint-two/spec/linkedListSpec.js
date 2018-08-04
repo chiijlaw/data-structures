@@ -52,4 +52,12 @@ describe('linkedList', function() {
   });
 
   // add more tests here to test the functionality of linkedList
+  it('should remove the tail when removeTail is called', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    linkedList.removeTail();
+    expect(linkedList.contains(5)).to.equal(true);
+    expect(linkedList.contains(6)).to.equal(false);
+  });
 });

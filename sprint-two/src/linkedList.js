@@ -25,6 +25,29 @@ var LinkedList = function() {
 
   };
 
+  list.removeTail = function(node) {
+    var temp = list.tail.value;
+    // step through whole list
+    // check node's next.
+    // if node's next === temp, set lit.tail to this node
+    var removeDeeper = function (node, target) {
+      if (node.next.value === target) {
+        list.tail = node;
+        node.next = null;
+      } else {
+        removeDeeper(node.next, target);
+      }
+    };
+
+    if (list.head.value === temp) {
+      list.tail = null;
+      list.head = null;
+    } else {
+      removeDeeper(list.head.next, temp);
+    }
+  };
+
+
   list.contains = function(target) {
     
     var result = false;
@@ -66,7 +89,8 @@ var Node = function(value) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
-// addTail is a constant O O(1)
-// removeHead is a constant O O(1)
-// contains is a linear O. O(n)
+// addTail is a constant O(1)
+// removeHead is a constant O(1)
+// contains is a linear O(n)
+// removeTail is linear O(n)
  */
