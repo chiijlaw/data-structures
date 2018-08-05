@@ -13,7 +13,9 @@ var LinkedList = function() {
     } else {
       list.tail.next = newNode;
       //var temp = list.tail.next;
+      newNode.previous = list.tail;
       list.tail = newNode;
+      
     }
   };
 
@@ -21,6 +23,9 @@ var LinkedList = function() {
     
     var oldHead = list.head.value;
     list.head = list.head.next;
+    if (list.head !== null) {
+      list.head.previous = null;
+    }
     return oldHead;
 
   };
@@ -30,21 +35,29 @@ var LinkedList = function() {
     // step through whole list
     // check node's next.
     // if node's next === temp, set lit.tail to this node
-    var removeDeeper = function (node, target) {
-      if (node.next.value === target) {
-        list.tail = node;
-        node.next = null;
-      } else {
-        removeDeeper(node.next, target);
-      }
-    };
+    
+    // For singly linked lists!!!!!!
+    //   var removeDeeper = function (node, target) {
+    //     if (node.next.value === target) {
+    //       list.tail = node;
+    //       node.next = null;
+    //     } else {
+    //       removeDeeper(node.next, target);
+    //     }
+    //   };
 
-    if (list.head.value === temp) {
-      list.tail = null;
-      list.head = null;
-    } else {
-      removeDeeper(list.head.next, temp);
+    //   if (list.head.value === temp) {
+    //     list.tail = null;
+    //     list.head = null;
+    //   } else {
+    //     removeDeeper(list.head.next, temp);
+    //   }
+
+    list.tail = list.tail.previous;
+    if (list.tail !== null) {
+      list.tail.next = null;
     }
+    return temp;
   };
 
 
@@ -83,6 +96,7 @@ var Node = function(value) {
 
   node.value = value;
   node.next = null;
+  node.previous = null;
 
   return node;
 };
