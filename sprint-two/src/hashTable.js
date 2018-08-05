@@ -8,42 +8,49 @@ var HashTable = function() {
 
 HashTable.prototype.insert = function(k, v) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-
+  var trough = this._storage.get(index) || [];
   var value = [k, v];
-  if (this._storage.get(index) === undefined) {
-    this._storage.set(index, []);
-    this._storage.get(index).push(value);
+  //empty trough
+  if (trough.length <= 0) {
+    trough.push(value);
   } else {
-    for (var i = 0; i < this._storage.get(index).length; i++) {
-      if (this._storage.get(index)[i] === null) {
-        
-      } else if (this._storage.get(index)[i][0] === k) {
-        this._storage.get(index)[i][1] = v;
-      }
+    //not empty trough
+    for (var i = 0; i < trough.length; i++) {
+      //if trough has an array with value k matching
+      if (trough[i][0] === k) {
+        trough[i][1] = v;
+        break;
+      } 
     }
-    this._storage.get(index).push(value);
+    trough.push(value);
   }
   
   this._counter++;
+  this._storage.set(index, trough);
   
   var percent = this._counter / this._limit;
   if (percent > .75) {
-    var oldValues = [];
-    this._storage.each(function(storageIndex, index, storage) {
-      if (storageIndex !== undefined) {
-        for (var i = 0; i < storageIndex.length; i++) {
-          oldValues.push(storageIndex[i]);
-          // storageIndex[i] = null;
-        }
-      }
-    });
+    var oldValues = this._storage;
+    // this._storage.each(function(storageIndex, index, storage) {
+    //   if (storageIndex !== undefined) {
+    //     for (var i = 0; i < storageIndex.length; i++) {
+    //       oldValues.push(storageIndex[i]);
+    //     }
+    //   }
+    // });
     this._limit = this._limit * 2;
     var newStorage = LimitedArray(this._limit);
     this._counter = 0;
     this._storage = newStorage;
-    for (var i = 0; i < oldValues.length; i++) {
-      this.insert(oldValues[i][0], oldValues[i][1]);      
-    }
+    var context = this;
+    // for (var i = 0; i < oldValues.length; i++) {
+    //   this.insert(oldValues[i][0], oldValues[i][1]);      
+    oldValues.each(function(trough) {
+      if (!trough) { return; }
+      for (var i = 0; i < trough.length; i++) {
+        this.insert(trough[i][0], trough[i][1]);
+      }
+    }.bind(context));
   }
   
   // var value = [k, v];
@@ -70,16 +77,13 @@ HashTable.prototype.insert = function(k, v) {
 
 HashTable.prototype.retrieve = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-  
-  if (this._storage.get(index) === undefined || this._storage.get(index) === null) {
-    return undefined;
-  } else {
-    for (var i = 0; i < this._storage.get(index).length; i++) {
-      if (this._storage.get(index)[i][0] === k) {
-        return this._storage.get(index)[i][1];
-      }
+  var trough = this._storage.get(index) || [];
+  for (var i = 0; i < trough.length; i++) {
+    if (trough[i][0] === k) {
+      return trough[i][1];
     }
   }
+  return undefined;
 
   // for (var i = 0; i < this._storage[index].length; i++) {
   //   if (this._storage[index][i][0] === k) {
@@ -91,10 +95,14 @@ HashTable.prototype.retrieve = function(k) {
 
 HashTable.prototype.remove = function(k) {
   var index = getIndexBelowMaxForKey(k, this._limit);
-
-  for (var i = 0; i < this._storage.get(index).length; i++ ) {
-    if (this._storage.get(index)[i][0] === k) {
-      this._storage.get(index).splice(i, 1);
+  var trough = this._storage.get(index) || [];
+  
+  if (trough === undefined) {
+    debugger;
+  }
+  for (var i = 0; i < trough.length; i++ ) {
+    if (trough[i][0] === k) {
+      trough.splice(i, 1);
     }
   }
   this._counter--;
